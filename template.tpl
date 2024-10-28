@@ -14,6 +14,12 @@ ___INFO___
   "version": 1,
   "securityGroups": [],
   "displayName": "Triggerbee Event Logging",
+  "categories": [
+	"ANALYTICS", 
+	"PERSONALIZATION",
+	"CONVERSIONS",
+  "EVENTS"
+],
   "brand": {
     "id": "brand_dummy",
     "displayName": "",

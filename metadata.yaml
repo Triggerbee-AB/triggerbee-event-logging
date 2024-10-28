@@ -1,0 +1,6 @@
+homepage: "https://www.triggerbee.com"
+documentation: "https://help.triggerbee.com/gtm-tracking/"
+versions:
+  # Latest version
+  - sha: 
+    changeNotes: Initial release

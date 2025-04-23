@@ -1,4 +1,4 @@
-﻿___TERMS_OF_SERVICE___
+___TERMS_OF_SERVICE___
 
 By creating or modifying this file you agree to Google Tag Manager's Community
 Template Gallery Developer Terms of Service available at
@@ -48,7 +48,11 @@ ___TEMPLATE_PARAMETERS___
       {
         "value": "goal",
         "displayValue": "Goal"
-      }
+      },
+	{
+        "value": "goalIdentify",
+        "displayValue": "Goal with Identification"
+        }
     ],
     "simpleValueType": true
   },
@@ -70,21 +74,21 @@ ___TEMPLATE_PARAMETERS___
         "name": "orderId",
         "displayName": "Transaction ID variable (optional)",
         "simpleValueType": true,
-        "help": "Insert the variable that contains the transaction ID (e.g. {{transaction_id}}"
+        "help": "Insert the variable that contains the transaction ID (e.g. {{transaction_id}})"
       },
       {
         "type": "TEXT",
         "name": "couponCode",
         "displayName": "Coupon code variable (optional)",
         "simpleValueType": true,
-        "help": "Insert the variable that contains the coupon code (e.g. {{coupon_code}}"
+        "help": "Insert the variable that contains the coupon code (e.g. {{coupon_code}})"
       },
       {
         "type": "TEXT",
         "name": "userEmail",
         "displayName": "Customer email variable (optional)",
         "simpleValueType": true,
-        "help": "Insert the variable that contains the customer\u0027s email address (e.g. {{customer_email}}"
+        "help": "Insert the variable that contains the customer\u0027s email address (e.g. {{customer_email}})"
       }
     ],
     "enablingConditions": [
@@ -151,6 +155,28 @@ ___TEMPLATE_PARAMETERS___
         "type": "EQUALS"
       }
     ]
+  },
+  {
+    "type": "GROUP",
+    "name": "goalIdentifyData",
+    "displayName": "Goal settings",
+    "groupStyle": "NO_ZIPPY",
+    "subParams": [
+      {
+        "type": "TEXT",
+        "name": "eventEmail",
+        "displayName": "Email address",
+        "simpleValueType": true,
+        "help": "Insert the variable that contains the email address performing the event (e.g. {{customer_email}}"
+      }
+    ],
+    "enablingConditions": [
+      {
+        "paramName": "eventType",
+        "paramValue": "goalIdentify",
+        "type": "EQUALS"
+      }
+    ]
   }
 ]
 
@@ -169,10 +195,10 @@ let revenue = data.revenue ? makeNumber(data.revenue) : null;
 let orderId = data.orderId ? makeString(data.orderId) : '';
 let couponCode = data.couponCode ? makeString(data.couponCode) : '';
 let userEmail = data.userEmail ? makeString(data.userEmail) : '';
+let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
+let goalEventName = customGoalName || goalName;
 
 if (eventType === 'goal') {
-    let goalEventName = customGoalName || goalName;
-
     if (goalEventName) {
         callInWindow('triggerbee.event', {
             type: 'goal',
@@ -200,7 +226,23 @@ if (eventType === 'goal') {
     
     log('Purchase event sent with Order ID: ' + (orderId || 'N/A'));
     data.gtmOnSuccess();
-} else {
+
+} else if (eventType === 'goalIdentify') {
+    let goalEvent = {
+        type: 'goal',
+        name: goalEventName,
+        data: { 
+            identity: { 
+                email: eventEmail 
+            }
+        }
+    };
+    callInWindow('triggerbee.event', goalEvent);
+    
+    log('Goal event sent with Identification');
+    data.gtmOnSuccess();
+} 
+else {
     log('Invalid event type selected');
     data.gtmOnFailure();
 }
@@ -341,5 +383,3 @@ scenarios: []
 ___NOTES___
 
 Created on 28/10/2024, 08:39:40
-
-

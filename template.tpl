@@ -230,11 +230,9 @@ let revenue = data.revenue ? makeNumber(data.revenue) : null;
 let orderId = data.orderId ? makeString(data.orderId) : '';
 let couponCode = data.couponCode ? makeString(data.couponCode) : '';
 let userEmail = data.userEmail ? makeString(data.userEmail) : '';
-let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
-let goalEventName = customGoalName || goalName;
-let goalIdentityName = customIdentityGoalName || goalIdentityName;
 
 if (eventType === 'goal') {
+let goalEventName = customGoalName || goalName;
     if (goalEventName) {
         callInWindow('triggerbee.event', {
             type: 'goal',
@@ -264,6 +262,9 @@ if (eventType === 'goal') {
     data.gtmOnSuccess();
 
 } else if (eventType === 'goalIdentify') {
+let goalIdentityName = customIdentityGoalName || goalIdentityName;
+let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
+
     let goalEvent = {
         type: 'goal',
         name: goalIdentityName,

@@ -132,20 +132,24 @@ ___TEMPLATE_PARAMETERS___
             "displayValue": "Add to wishlist"
           },
           {
+            "value": "Logged In",
+            "displayValue": "Logged In"
+          },
+          {
             "value": "Register membership",
             "displayValue": "Register membership"
           }
         ],
         "simpleValueType": true,
         "notSetText": "Select goal",
-        "help": "Select the goal you would like to track, or choose from your own variables. The value must be a string (plain text) and cannot be a number."
+        "help": "Select one of our default goals, or add a custom goal below."
       },
       {
         "type": "TEXT",
         "name": "customGoalName",
         "displayName": "Custom goal name (optional)",
         "simpleValueType": true,
-        "help": "Enter a custom goal name. The value in this field overrides any value in the Goal dropdown above."
+        "help": "Enter a custom goal name. The value in this field overrides any value in the Goal dropdown above. The value must be a string (plain text) and cannot be a number"
       }
     ],
     "enablingConditions": [
@@ -162,6 +166,37 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Goal settings",
     "groupStyle": "NO_ZIPPY",
     "subParams": [
+
+      {
+        "type": "SELECT",
+        "name": "goalName",
+        "displayName": "Goal",
+        "macrosInSelect": false,
+        "selectItems": [
+          {
+            "value": "loggedIn",
+            "displayValue": "Logged In"
+          },
+          {
+            "value": "registeredMembership",
+            "displayValue": "Registered membership"
+          },
+          {
+            "value": "contactForm",
+            "displayValue": "Submitted Contact Form"
+          }
+        ],
+        "simpleValueType": true,
+        "notSetText": "Select goal",
+        "help": "Select one of our default goals, or add a custom goal below."
+      },
+      {
+        "type": "TEXT",
+        "name": "customGoalName",
+        "displayName": "Custom goal name (optional)",
+        "simpleValueType": true,
+        "help": "Enter a custom goal name. The value in this field overrides any value in the Goal dropdown above. The value must be a string (plain text) and cannot be a number"
+      },
       {
         "type": "TEXT",
         "name": "eventEmail",

@@ -49,10 +49,10 @@ ___TEMPLATE_PARAMETERS___
         "value": "goal",
         "displayValue": "Goal"
       },
-	{
+      {
         "value": "goalIdentify",
         "displayValue": "Goal with Identification"
-        }
+      }
     ],
     "simpleValueType": true
   },
@@ -132,12 +132,12 @@ ___TEMPLATE_PARAMETERS___
             "displayValue": "Add to wishlist"
           },
           {
-            "value": "Logged In",
-            "displayValue": "Logged In"
-          },
-          {
             "value": "Register membership",
             "displayValue": "Register membership"
+          },
+          {
+            "value": "Logged in",
+            "displayValue": "Logged in"
           }
         ],
         "simpleValueType": true,
@@ -166,34 +166,32 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Goal settings",
     "groupStyle": "NO_ZIPPY",
     "subParams": [
-
       {
         "type": "SELECT",
         "name": "goalIdentityName",
-        "displayName": "Goal",
+        "displayName": "Select goal",
         "macrosInSelect": false,
         "selectItems": [
           {
-            "value": "loggedIn",
-            "displayValue": "Logged In"
+            "value": "Logged in",
+            "displayValue": "Logged in"
           },
           {
-            "value": "registeredMembership",
-            "displayValue": "Registered membership"
+            "value": "Register Membership",
+            "displayValue": "Register Membership"
           },
           {
-            "value": "contactForm",
+            "value": "Submitted Contact Form",
             "displayValue": "Submitted Contact Form"
           }
         ],
         "simpleValueType": true,
-        "notSetText": "Select goal",
         "help": "Select one of our default goals, or add a custom goal below."
       },
       {
         "type": "TEXT",
         "name": "customIdentityGoalName",
-        "displayName": "Custom goal name (optional)",
+        "displayName": "Custom Goal Name",
         "simpleValueType": true,
         "help": "Enter a custom goal name. The value in this field overrides any value in the Goal dropdown above. The value must be a string (plain text) and cannot be a number"
       },
@@ -216,6 +214,7 @@ ___TEMPLATE_PARAMETERS___
 ]
 
 
+
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 const log = require('logToConsole');
@@ -224,15 +223,12 @@ const makeString = require('makeString');
 const makeNumber = require('makeNumber');
 
 let eventType = data.eventType;
-let goalName = data.goalName ? makeString(data.goalName) : '';
-let customGoalName = data.customGoalName ? makeString(data.customGoalName) : '';
-let revenue = data.revenue ? makeNumber(data.revenue) : null;
-let orderId = data.orderId ? makeString(data.orderId) : '';
-let couponCode = data.couponCode ? makeString(data.couponCode) : '';
-let userEmail = data.userEmail ? makeString(data.userEmail) : '';
 
-if (eventType === 'goal') {
-let goalEventName = customGoalName || goalName;
+if (eventType === 'goal') { 
+    let goalName = data.goalName ? makeString(data.goalName) : '';
+    let customGoalName = data.customGoalName ? makeString(data.customGoalName) : '';
+    let goalEventName = customGoalName || goalName; 
+
     if (goalEventName) {
         callInWindow('triggerbee.event', {
             type: 'goal',
@@ -245,7 +241,35 @@ let goalEventName = customGoalName || goalName;
         log('Error: Goal name is missing');
         data.gtmOnFailure();
     }
+} else if (eventType === 'goalIdentify') { 
+    let goalIdentityName = data.goalIdentityName ? makeString(data.goalIdentityName) : '';
+    let customIdentityGoalName = data.customIdentityGoalName ? makeString(data.customIdentityGoalName) : ''; 
+    let goalIdentifyEventName = customIdentityGoalName || goalIdentityName;   
+    let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
+
+    if (goalIdentifyEventName && eventEmail) {
+        callInWindow('triggerbee.event', {
+            type: 'goal',
+            name: goalIdentifyEventName,
+            data: { 
+                identity: { 
+                    email: eventEmail
+            }
+        }
+        });
+        
+        log('Goal event sent with name: ' + goalIdentifyEventName);
+        data.gtmOnSuccess();
+    } else {
+        log('Error: Goal name is missing');
+        data.gtmOnFailure();
+    }
 } else if (eventType === 'purchase') {
+    let revenue = data.revenue ? makeNumber(data.revenue) : null;
+    let orderId = data.orderId ? makeString(data.orderId) : '';
+    let couponCode = data.couponCode ? makeString(data.couponCode) : '';
+    let userEmail = data.userEmail ? makeString(data.userEmail) : '';
+
     let purchaseEvent = {
         type: 'purchase',
         id: orderId || undefined,
@@ -260,26 +284,7 @@ let goalEventName = customGoalName || goalName;
     
     log('Purchase event sent with Order ID: ' + (orderId || 'N/A'));
     data.gtmOnSuccess();
-
-} else if (eventType === 'goalIdentify') {
-let goalIdentityName = customIdentityGoalName || goalIdentityName;
-let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
-
-    let goalEvent = {
-        type: 'goal',
-        name: goalIdentityName,
-        data: { 
-            identity: { 
-                email: eventEmail 
-            }
-        }
-    };
-    callInWindow('triggerbee.event', goalEvent);
-    
-    log('Goal event sent with Identification');
-    data.gtmOnSuccess();
-} 
-else {
+} else {
     log('Invalid event type selected');
     data.gtmOnFailure();
 }
@@ -420,3 +425,4 @@ scenarios: []
 ___NOTES___
 
 Created on 28/10/2024, 08:39:40
+Updated on 23/04/2025 14:24

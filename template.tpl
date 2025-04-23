@@ -169,7 +169,7 @@ ___TEMPLATE_PARAMETERS___
 
       {
         "type": "SELECT",
-        "name": "goalName",
+        "name": "goalIdentityName",
         "displayName": "Goal",
         "macrosInSelect": false,
         "selectItems": [
@@ -192,7 +192,7 @@ ___TEMPLATE_PARAMETERS___
       },
       {
         "type": "TEXT",
-        "name": "customGoalName",
+        "name": "customIdentityGoalName",
         "displayName": "Custom goal name (optional)",
         "simpleValueType": true,
         "help": "Enter a custom goal name. The value in this field overrides any value in the Goal dropdown above. The value must be a string (plain text) and cannot be a number"
@@ -232,6 +232,7 @@ let couponCode = data.couponCode ? makeString(data.couponCode) : '';
 let userEmail = data.userEmail ? makeString(data.userEmail) : '';
 let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
 let goalEventName = customGoalName || goalName;
+let goalIdentityName = customIdentityGoalName || goalIdentityName;
 
 if (eventType === 'goal') {
     if (goalEventName) {
@@ -265,7 +266,7 @@ if (eventType === 'goal') {
 } else if (eventType === 'goalIdentify') {
     let goalEvent = {
         type: 'goal',
-        name: goalEventName,
+        name: goalIdentityName,
         data: { 
             identity: { 
                 email: eventEmail 

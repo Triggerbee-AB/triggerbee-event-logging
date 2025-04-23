@@ -2,15 +2,15 @@ homepage: "https://www.triggerbee.com"
 documentation: "https://help.triggerbee.com/article/556-gtm-tracking"
 versions:
   # Latest version
-  - sha: 4d093e3d997e92b31a7f4435e4273cac31f8e891
-    changeNotes: Updated "Goal with Identification" to have unique variable names
+  - sha: f8a3e7baa5d1bb7fe08c42f9e45cf7fcf8e88538
+    changeNotes: Added Goal Type "Goal with Identification" to make it possible to add an email address together with an event, for Logins etc.
   # Older versions
   - sha: d40392d8acc6d0420056ae13c3188153a2fa8b82
     changeNotes: Added dropdown with default goal names for "Goal with Identification"
-  - sha: 560e369c17d8e21d2a50e2cda8783e3f827d4f34
-    changeNotes: Added Goal Type "Goal with Identification" to make it possible to add an email address together with an event, for Logins etc.
   - sha: ddfd4679241894179fff6a4128452daee9c8ee04
     changeNotes: Initial release
+
+    
 
     
 

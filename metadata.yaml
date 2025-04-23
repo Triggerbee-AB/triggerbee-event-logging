@@ -1,5 +1,5 @@
 homepage: "https://www.triggerbee.com"
-documentation: "https://help.triggerbee.com/article/556-gtm-tracking"
+documentation: "https://intercom.help/triggerbee-b22fa4ccd330/en/articles/11130859-track-events-and-identification-with-gtm"
 versions:
   # Latest version
   - sha: f8a3e7baa5d1bb7fe08c42f9e45cf7fcf8e88538

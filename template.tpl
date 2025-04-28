@@ -265,7 +265,7 @@ if (eventType === 'goal') {
         data.gtmOnFailure();
     }
 } else if (eventType === 'purchase') {
-    let revenue = data.revenue ? Math.round(makeNumber(data.revenue)) : null;
+    let revenue = data.revenue ? makeNumber(data.revenue) : null;
     let orderId = data.orderId ? makeString(data.orderId) : '';
     let couponCode = data.couponCode ? makeString(data.couponCode) : '';
     let userEmail = data.userEmail ? makeString(data.userEmail) : '';

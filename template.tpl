@@ -57,6 +57,14 @@ ___TEMPLATE_PARAMETERS___
     "simpleValueType": true
   },
   {
+    "type": "CHECKBOX",
+    "name": "debugMode",
+    "displayName": "Enable Debug Mode",
+    "simpleValueType": true,
+    "defaultValue": false,
+    "help": "When enabled, all actions and data will be logged to the browser console for debugging."
+  },
+  {
     "type": "GROUP",
     "name": "purchaseData",
     "displayName": "Purchase settings",
@@ -216,78 +224,103 @@ ___TEMPLATE_PARAMETERS___
 
 
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
-
 const log = require('logToConsole');
 const callInWindow = require('callInWindow');
 const makeString = require('makeString');
 const makeNumber = require('makeNumber');
 
-let eventType = data.eventType;
+const debugMode = data.debugMode === true;
 
-if (eventType === 'goal') { 
-    let goalName = data.goalName ? makeString(data.goalName) : '';
-    let customGoalName = data.customGoalName ? makeString(data.customGoalName) : '';
-    let goalEventName = customGoalName || goalName; 
-
-    if (goalEventName) {
-        callInWindow('triggerbee.event', {
-            type: 'goal',
-            name: goalEventName
-        });
-        
-        log('Goal event sent with name: ' + goalEventName);
-        data.gtmOnSuccess();
-    } else {
-        log('Error: Goal name is missing');
-        data.gtmOnFailure();
-    }
-} else if (eventType === 'goalIdentify') { 
-    let goalIdentityName = data.goalIdentityName ? makeString(data.goalIdentityName) : '';
-    let customIdentityGoalName = data.customIdentityGoalName ? makeString(data.customIdentityGoalName) : ''; 
-    let goalIdentifyEventName = customIdentityGoalName || goalIdentityName;   
-    let eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
-
-    if (goalIdentifyEventName && eventEmail) {
-        callInWindow('triggerbee.event', {
-            type: 'goal',
-            name: goalIdentifyEventName,
-            data: { 
-                identity: { 
-                    email: eventEmail
-            }
-        }
-        });
-        
-        log('Goal event sent with name: ' + goalIdentifyEventName);
-        data.gtmOnSuccess();
-    } else {
-        log('Error: Goal name is missing');
-        data.gtmOnFailure();
-    }
-} else if (eventType === 'purchase') {
-    let revenue = data.revenue ? makeNumber(data.revenue) : null;
-    let orderId = data.orderId ? makeString(data.orderId) : '';
-    let couponCode = data.couponCode ? makeString(data.couponCode) : '';
-    let userEmail = data.userEmail ? makeString(data.userEmail) : '';
-
-    let purchaseEvent = {
-        type: 'purchase',
-        id: orderId || undefined,
-        data: {}
-    };
-
-    if (revenue) purchaseEvent.data.revenue = revenue;
-    if (couponCode) purchaseEvent.data.couponCode = couponCode;
-    if (userEmail) purchaseEvent.data.identity = { email: userEmail };
-
-    callInWindow('triggerbee.event', purchaseEvent);
-    
-    log('Purchase event sent with Order ID: ' + (orderId || 'N/A'));
-    data.gtmOnSuccess();
-} else {
-    log('Invalid event type selected');
-    data.gtmOnFailure();
+function debugLog(msg) {
+  if (debugMode) {
+    log(msg);
+  }
 }
+
+var eventType = data.eventType;
+debugLog('Initiating Triggerbee Event type: ' + eventType);
+
+if (eventType === 'goal') {
+  var goalName = data.goalName ? makeString(data.goalName) : '';
+  var customGoalName = data.customGoalName ? makeString(data.customGoalName) : '';
+  var goalEventName = customGoalName || goalName;
+
+  debugLog('Resolved goal event name: ' + goalEventName);
+
+  if (goalEventName) {
+    callInWindow('triggerbee.event', {
+      type: 'goal',
+      name: goalEventName
+    });
+
+    debugLog('Goal event sent with name: ' + goalEventName);
+    data.gtmOnSuccess();
+  } else {
+    debugLog('Error: Goal name is missing');
+    data.gtmOnFailure();
+  }
+
+} else if (eventType === 'goalIdentify') {
+  var goalIdentityName = data.goalIdentityName ? makeString(data.goalIdentityName) : '';
+  var customIdentityGoalName = data.customIdentityGoalName ? makeString(data.customIdentityGoalName) : '';
+  var goalIdentifyEventName = customIdentityGoalName || goalIdentityName;
+  var eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
+
+  debugLog('Resolved goalIdentify name: ' + goalIdentifyEventName);
+  debugLog('Resolved event email: ' + eventEmail);
+
+  if (goalIdentifyEventName && eventEmail) {
+    callInWindow('triggerbee.event', {
+      type: 'goal',
+      name: goalIdentifyEventName,
+      data: {
+        identity: {
+          email: eventEmail
+        }
+      }
+    });
+
+    debugLog('GoalIdentify event sent with name: ' + goalIdentifyEventName);
+    data.gtmOnSuccess();
+  } else {
+    debugLog('Error: GoalIdentify name or email is missing');
+    data.gtmOnFailure();
+  }
+
+} else if (eventType === 'purchase') {
+  var revenueValue = data.revenue ? makeNumber(data.revenue) : -1;
+  var orderId = data.orderId ? makeString(data.orderId) : '';
+  var couponCode = data.couponCode ? makeString(data.couponCode) : '';
+  var userEmail = data.userEmail ? makeString(data.userEmail) : '';
+
+  var purchaseEvent = {
+    type: 'purchase',
+    id: orderId || undefined,
+    data: {}
+  };
+
+  debugLog('Preparing purchase event - Revenue: ' + revenueValue + ', Order ID: ' + orderId + ', Coupon Code: ' + couponCode + ', Email: ' + userEmail);
+
+  if (revenueValue >= 0) {
+    purchaseEvent.data.revenue = revenueValue;
+  }
+  if (couponCode) {
+    purchaseEvent.data.couponCode = couponCode;
+  }
+  if (userEmail) {
+    purchaseEvent.data.identity = { email: userEmail };
+  }
+
+  callInWindow('triggerbee.event', purchaseEvent);
+
+  debugLog('Purchase event sent with Order ID: ' + (orderId || 'N/A'));
+  data.gtmOnSuccess();
+
+} else {
+  debugLog('Invalid event type selected');
+  data.gtmOnFailure();
+}
+
 
 
 ___WEB_PERMISSIONS___

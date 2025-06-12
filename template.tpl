@@ -265,6 +265,7 @@ if (eventType === 'goal') {
   var customIdentityGoalName = data.customIdentityGoalName ? makeString(data.customIdentityGoalName) : '';
   var goalIdentifyEventName = customIdentityGoalName || goalIdentityName;
   var eventEmail = data.eventEmail ? makeString(data.eventEmail) : '';
+  var eventContactID = data.eventContactID ? makeString(data.eventContactID) : '';
 
   debugLog('Resolved goalIdentify name: ' + goalIdentifyEventName);
   debugLog('Resolved event email: ' + eventEmail);
@@ -282,7 +283,22 @@ if (eventType === 'goal') {
 
     debugLog('GoalIdentify event sent with name: ' + goalIdentifyEventName);
     data.gtmOnSuccess();
-  } else {
+    
+  }if (goalIdentifyEventName && contactID) {
+    callInWindow('triggerbee.event', {
+      type: 'goal',
+      name: goalIdentifyEventName,
+      data: {
+        identity: {
+          voyadoContactId: eventContactID
+        }
+      }
+    });
+
+    debugLog('GoalIdentify event sent with name: ' + goalIdentifyEventName);
+    data.gtmOnSuccess();
+  
+  } else{
     debugLog('Error: GoalIdentify name or email is missing');
     data.gtmOnFailure();
   }
@@ -292,6 +308,8 @@ if (eventType === 'goal') {
   var orderId = data.orderId ? makeString(data.orderId) : '';
   var couponCode = data.couponCode ? makeString(data.couponCode) : '';
   var userEmail = data.userEmail ? makeString(data.userEmail) : '';
+  var contactID = data.contactID ? makeString(data.contactID) : '';
+
 
   var purchaseEvent = {
     type: 'purchase',
@@ -309,6 +327,9 @@ if (eventType === 'goal') {
   }
   if (userEmail) {
     purchaseEvent.data.identity = { email: userEmail };
+  }
+  if (contactID) {
+    purchaseEvent.data.identity = { voyadoContactId: contactID };
   }
 
   callInWindow('triggerbee.event', purchaseEvent);

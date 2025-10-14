@@ -1,9 +1,9 @@
 homepage: "https://www.triggerbee.com"
-documentation: "https://intercom.help/triggerbee-b22fa4ccd330/en/articles/11130859-track-events-and-identification-with-gtm"
+documentation: "https://help.triggerbee.com/en/articles/11130859-track-events-and-identification-with-gtm"
 versions:
   # Latest version
-  - sha: f8041f7e4387cbe137fb4ee1344f4d22ca5b04bf
-    changeNotes: Added possibility to have VoyadoID as identifier in event logging
+  - sha: c6f92dba502ab710f8039d7960b96dcf92783638
+  changeNotes: Added possibility to have VoyadoID as identifier in event logging
   # Older versions
   - sha: aa80039e0429b70c396f6cc427335860d96c8648
     changeNotes: Added Toggle for Activating Console Debugging
@@ -13,11 +13,3 @@ versions:
     changeNotes: Added dropdown with default goal names for "Goal with Identification"
   - sha: ddfd4679241894179fff6a4128452daee9c8ee04
     changeNotes: Initial release
-
-    
-
-    
-
-
-
-    

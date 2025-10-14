@@ -23,32 +23,24 @@ This template simplifies the process of sending events to Triggerbee, helping yo
 ### Step 1: Install and Configure the Template
 
 1. In GTM, navigate to `Templates` > `Tag Templates` and click **New**.
-2. Click on the menu icon (three dots) and select **Import**.
+2. Navigate to the Template Gallery and search for **Triggerbee**
 3. Import the Triggerbee Event Logger Template file.
-4. Save the template.
 
-### Step 2: Add Global Variable Permission
-
-1. In the template editor, go to the **Resources** tab.
-2. Click on **Add New Resource** and select **Global Variable**.
-3. Enter `triggerbee` as the variable name.
-4. Set the necessary read/write permissions.
-5. Save the template.
-
-### Step 3: Create a New Tag Using the Template
+### Step 2: Create a New Tag Using the Template
 
 1. Go to `Tags` > **New**.
 2. Select the **Triggerbee Event Logger Template** from the list of tag types.
 3. Configure the tag settings:
-   - **Event Type:** Choose `goal` or `purchase`.
+   - **Event Type:** Choose `goal`, `goal with identification` or `purchase`.
    - **Goal Name:** Select a standardized goal name from the dropdown.
    - **Custom Goal Name:** *(Optional)* Provide a custom goal name. This overrides the standard goal name if not empty.
    - **Revenue:** Input the Data Layer variable representing revenue *(used only for purchase events)*.
    - **Order ID:** Input the Data Layer variable for the order ID *(used only for purchase events)*.
    - **Coupon Code:** Input the Data Layer variable for the coupon code *(used only for purchase events)*.
-   - **User Email:** Input the Data Layer variable for the customer's email *(used only for purchase events)*.
+   - **User Email:** Input the Data Layer variable for the customers email
+   - **Voyado ID:** Input the Data Layer variable for the customers Voyado ID *(used only if you have VoyadoID as identifier)
 
-### Step 4: Add Triggers
+### Step 3: Add Triggers
 
 1. Assign a **Trigger** to the Triggerbee Event Logger Tag to determine when the tag should fire.
 2. **Ensure Proper Firing Order:**
@@ -57,16 +49,17 @@ This template simplifies the process of sending events to Triggerbee, helping yo
    - Alternatively, set up a custom event that signifies Triggerbee is ready.
 3. Click **Save**.
 
-### Step 5: Publish
+### Step 4: Publish
 
 1. Use GTM's **Preview Mode** to test your setup.
 2. Once verified, click **Submit** to publish your changes.
 
 ## Usage
 
-Once installed and configured, the Triggerbee Event Logger will allow you to send `goal` and `purchase` events to Triggerbee based on user interactions and events on your website.
+Once installed and configured, the Triggerbee Event Logger will allow you to send `goal`, `goal with identification`, and `purchase` events to Triggerbee based on user interactions and events on your website.
 
-- **Goal Events:** Use this to log specific actions that users take on your site that are non-revenue driven. For example, "Add to cart", "Initialize checkout", "Viewed product", "Submitted support ticket", etc. These goals are key events in the customer journey, and can be used to create audiences and profile filters.
+- **Goal Events:** Use this to log specific actions that users take on your site that are non-revenue driven. For example, "Add to cart", "Initialize checkout", "Viewed product"
+- **Goal with Identification Events:** Use this to log specific actions that users take on your site that identifies visitors. This is useful for actions like "Registered Membership" or "Logged In"
 - **Purchase Events:** Use this to send detailed purchase information to Triggerbee, which can include revenue, order IDs, coupon codes, and customer emails. Purchase events with revenue data will help you see how your campaigns perform in terms of driving revenue.
 
 ## Important Notes
@@ -79,5 +72,5 @@ Once installed and configured, the Triggerbee Event Logger will allow you to sen
 
 If you need assistance:
 
-- **Triggerbee Documentation:** Refer to Triggerbee's official documentation for detailed guidance.
+- **Triggerbee Documentation:** Visit the [Triggerbee Help Center](https://help.triggerbee.com/) for guides and FAQs.
 - **Contact Triggerbee Support:** Reach out to Triggerbee's support team for specialized help.

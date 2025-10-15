@@ -2,9 +2,11 @@ homepage: "https://www.triggerbee.com"
 documentation: "https://help.triggerbee.com/en/articles/11130859-track-events-and-identification-with-gtm"
 versions:
   # Latest version
-  - sha: c6f92dba502ab710f8039d7960b96dcf92783638
-  changeNotes: Added possibility to have VoyadoID as identifier in event logging
+  - sha: 112c50d5df5c1bac5baeb4066fc28e3107542be6
+    changeNotes: Updated support for VoyadoID identification and added automatic testing of code
   # Older versions
+  - sha: c6f92dba502ab710f8039d7960b96dcf92783638
+    changeNotes: Added possibility to have VoyadoID as identifier in event logging
   - sha: aa80039e0429b70c396f6cc427335860d96c8648
     changeNotes: Added Toggle for Activating Console Debugging
   - sha: f8a3e7baa5d1bb7fe08c42f9e45cf7fcf8e88538
